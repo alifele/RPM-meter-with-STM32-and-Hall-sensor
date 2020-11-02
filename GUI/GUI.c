@@ -78,6 +78,9 @@ void WriteScreen(int val){
 
 void GUI_newScreen(void){
 	ssd1306_Fill(White);
+	ssd1306_SetCursor(0,0);
 	ssd1306_UpdateScreen();
+
+
 }
 

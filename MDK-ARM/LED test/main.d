@@ -35,3 +35,4 @@ led test\main.o: ../ssd1306/inc/fonts.h
 led test\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 led test\main.o: ../keypad/Keypad.h
 led test\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
+led test\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
