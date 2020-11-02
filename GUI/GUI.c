@@ -52,3 +52,32 @@ void GUI_StartDemo(void){
 	
 }
 
+
+void WriteScreen(int val){
+	char content[10];
+	 ssd1306_Fill(White);
+	sprintf(content,"%d",val);
+	ssd1306_SetCursor(2,2);
+	ssd1306_WriteString("Sharif University",Font_7x10,Black);
+
+	//HAL_Delay(100);
+
+	ssd1306_SetCursor(2,32-9);
+	ssd1306_WriteString("Speed:",Font_11x18,Black);
+
+
+	ssd1306_WriteString(content,Font_11x18,Black);
+	ssd1306_SetCursor(101,32-9+5+10);
+	ssd1306_WriteString("RPM",Font_7x10,White);
+
+	ssd1306_UpdateScreen();
+	
+	
+}
+
+
+void GUI_newScreen(void){
+	ssd1306_Fill(White);
+	ssd1306_UpdateScreen();
+}
+

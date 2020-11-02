@@ -41,6 +41,7 @@ volatile uint32_t Difference = 0;
 volatile int32_t Frequency = 0;
 volatile uint8_t Is_First_Captured = 0;  // 0- not captured, 1- captured
 bool keys[20];
+char * preesed_char;
 
 
 
@@ -170,6 +171,16 @@ int main(void)
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 	  WriteScreen(120000/Freq_val);
 	  keypad_read(keys);
+	  
+	  for (uint8_t i=0; i<20; i++){
+		if (keys[i]){
+			preesed_char = keypad_getchar(i);
+		}
+	  }
+	  
+	  if (*preesed_char == 'e'){
+		  GUI_newScreen();
+	  }
 	  //counter += 1;
 
     /* USER CODE END WHILE */
@@ -507,29 +518,6 @@ static void keypad_Init(void){
 
 }
 
-
-
-void WriteScreen(int val){
-	char content[10];
-	 ssd1306_Fill(White);
-	sprintf(content,"%d",val);
-	ssd1306_SetCursor(2,2);
-	ssd1306_WriteString("Sharif University",Font_7x10,Black);
-
-	//HAL_Delay(100);
-
-	ssd1306_SetCursor(2,32-9);
-	ssd1306_WriteString("Speed:",Font_11x18,Black);
-
-
-	ssd1306_WriteString(content,Font_11x18,Black);
-	ssd1306_SetCursor(101,32-9+5+10);
-	ssd1306_WriteString("RPM",Font_7x10,White);
-
-	ssd1306_UpdateScreen();
-	
-	
-}
 
 
 
