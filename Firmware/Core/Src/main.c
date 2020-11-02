@@ -22,9 +22,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
-#include "ssd1306.h"
-#include "fonts.h"
+#include "GUI.h"
 
 /* USER CODE END Includes */
 
@@ -124,49 +122,12 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   ssd1306_Init();
-  HAL_Delay(1000);
-  ssd1306_Fill(White);
-  ssd1306_UpdateScreen();
   
-  ssd1306_SetCursor(15,10);
-  ssd1306_WriteString("Nano Tech",Font_11x18,Black);
-  ssd1306_SetCursor(48,10+18+8);
-  ssd1306_WriteString("Lab",Font_11x18,Black);
-  ssd1306_UpdateScreen();
-  HAL_Delay(1000);
-  ssd1306_Fill(Black);
-  ssd1306_SetCursor(15,10);
-  ssd1306_WriteString("Nano Tech",Font_11x18,White);
-  ssd1306_SetCursor(48,10+18+8);
-  ssd1306_WriteString("Lab",Font_11x18,White);
-  ssd1306_UpdateScreen();
-  HAL_Delay(1000);
-  ssd1306_Fill(White);
-  ssd1306_SetCursor(15,10);
-  ssd1306_WriteString("Nano Tech",Font_11x18,Black);
-  ssd1306_SetCursor(48,10+18+8);
-  ssd1306_WriteString("Lab",Font_11x18,Black);
-  ssd1306_UpdateScreen();
-  HAL_Delay(1000);
-  ssd1306_Fill(Black);
-  ssd1306_SetCursor(15,10);
-  ssd1306_WriteString("Nano Tech",Font_11x18,White);
-  ssd1306_SetCursor(48,10+18+8);
-  ssd1306_WriteString("Lab",Font_11x18,White);
-  ssd1306_UpdateScreen();
-  HAL_Delay(1000);
+  GUI_StartDemo();
   
   
-  ssd1306_Fill(White);
-  ssd1306_UpdateScreen();
-  HAL_Delay(500);
-
-  ssd1306_SetCursor(2,2);
-  ssd1306_WriteString("Sharif University",Font_7x10,Black);
-  ssd1306_SetCursor(1,5);
-  ssd1306_WriteString("__________________",Font_7x10,Black);
-
-  HAL_Delay(500);
+  
+  
   /*/
   ssd1306_SetCursor(2,32-9);
   ssd1306_WriteString("Speed:",Font_11x18,Black);
