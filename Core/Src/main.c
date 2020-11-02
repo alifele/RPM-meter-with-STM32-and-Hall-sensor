@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "GUI.h"
+#include "Keypad.h"
 
 /* USER CODE END Includes */
 
@@ -39,6 +40,7 @@ volatile uint32_t IC_Value2 = 0;
 volatile uint32_t Difference = 0;
 volatile int32_t Frequency = 0;
 volatile uint8_t Is_First_Captured = 0;  // 0- not captured, 1- captured
+bool keys[20];
 
 
 
@@ -73,6 +75,7 @@ static void MX_TIM2_Init(void);
 static void MX_TIM6_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
+static void keypad_Init(void);
 
 /* USER CODE END PFP */
 
@@ -122,6 +125,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   ssd1306_Init();
+  keypad_Init();
   
   GUI_StartDemo();
   
@@ -146,7 +150,6 @@ int main(void)
   
   uint16_t dutyCycle = HAL_TIM_ReadCapturedValue(&htim3, TIM_CHANNEL_1);
   
-  int counter = 0;
   while (1)
   {
 	  //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
@@ -166,6 +169,7 @@ int main(void)
 	  HAL_Delay(100);
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 	  WriteScreen(120000/Freq_val);
+	  keypad_read(keys);
 	  //counter += 1;
 
     /* USER CODE END WHILE */
@@ -421,16 +425,25 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0|GPIO_PIN_12, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_12, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
 
-  /*Configure GPIO pins : PC0 PC12 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_12;
+  /*Configure GPIO pins : PC0 PC1 PC2 PC3
+                           PC4 PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
+                          |GPIO_PIN_4|GPIO_PIN_12;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : PC5 PC6 PC7 PC8 */
+  GPIO_InitStruct.Pin = GPIO_PIN_5|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PA8 */
@@ -456,16 +469,42 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim){
 	But I found out that it interferes with the interrupt of timer2 (which controls the Input Capture)
 	So I testd whether the interrupt of timer2 can break the delay in while loop, and I figured out that 
 	that is the case and timer2 interrupt can do so. So I am still handling the screen update with delay in the main loop.
-	
-	
 	*/
-	
 	
 	if (htim->Instance == TIM6){
 		
 		//HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 		//WriteScreen(120000/Freq_val);		
 	}	
+}
+
+static void keypad_Init(void){
+	keypad_typedef keypad_struct;
+	
+	keypad_struct.COL0_port = GPIOC;
+	keypad_struct.COL1_port = GPIOC;
+	keypad_struct.COL2_port = GPIOC;
+	keypad_struct.COL3_port = GPIOC;
+	
+	keypad_struct.ROW0_port = GPIOC;
+	keypad_struct.ROW1_port = GPIOC;
+	keypad_struct.ROW2_port = GPIOC;
+	keypad_struct.ROW3_port = GPIOC;
+	keypad_struct.ROW4_port = GPIOC;
+	
+	keypad_struct.COL0_pin = GPIO_PIN_8;
+	keypad_struct.COL1_pin = GPIO_PIN_7;
+	keypad_struct.COL2_pin = GPIO_PIN_6;
+	keypad_struct.COL3_pin = GPIO_PIN_5;
+	
+	keypad_struct.ROW0_pin = GPIO_PIN_0;
+	keypad_struct.ROW1_pin = GPIO_PIN_1;
+	keypad_struct.ROW2_pin = GPIO_PIN_2;
+	keypad_struct.ROW3_pin = GPIO_PIN_3;
+	keypad_struct.ROW4_pin = GPIO_PIN_4;
+	
+	keypad_init(&keypad_struct);
+
 }
 
 
