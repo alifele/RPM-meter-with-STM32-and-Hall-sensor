@@ -29,3 +29,9 @@ led test\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
 led test\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 led test\stm32f1xx_it.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 led test\stm32f1xx_it.o: ../Core/Inc/stm32f1xx_it.h
+led test\stm32f1xx_it.o: ../GUI/GUI.h
+led test\stm32f1xx_it.o: ../ssd1306/inc/ssd1306.h
+led test\stm32f1xx_it.o: ../ssd1306/inc/fonts.h
+led test\stm32f1xx_it.o: ../ssd1306/inc/fonts.h
+led test\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+led test\stm32f1xx_it.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -44,12 +44,15 @@ volatile int32_t Frequency = 0;
 volatile uint8_t Is_First_Captured = 0;  // 0- not captured, 1- captured
 bool keys[20];
 char * pressed_char;
-uint8_t curser[2] = {0,0};
-int8_t curser_state = 0;
+//uint8_t curser[2] = {0,0};
+//int8_t curser_state = 0;
 uint8_t xStep = 11;
-uint8_t blink_speed =2;
-uint8_t blink_counter =0;
+//uint8_t blink_speed =2;
+//uint8_t blink_counter =0;
 
+
+
+application_windows myapp;
 
 
 /* USER CODE END PTD */
@@ -100,6 +103,18 @@ static void keypad_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+	myapp.mainwin.name = "H";
+	myapp.menu.name = "B";
+
+	
+	GUI_menu__init__(&myapp.menu);
+	
+	/*
+	GUI_mainwin__init__(myapp.mainwin);
+	GUI_about__init__(myapp.about);
+	GUI_speed_show__init__(myapp.speed_show);
+	GUI_speed_set__init__(myapp.speed_set);
+	*/
 
   /* USER CODE END 1 */
 
@@ -159,7 +174,8 @@ int main(void)
   
   
   GUI_newScreen();
-  //GUI_writeHere("Helloooo",Font_7x10, curser);
+  window new_window = myapp.menu;
+  new_window.status = 1;
   while (1)
   {
 	  //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
@@ -178,17 +194,14 @@ int main(void)
 	  
 	  HAL_Delay(100);
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
-	  //WriteScreen(120000/Freq_val);
+	 
 	  
-	  keypad_read(keys);
-	  pressed_char = keypad_getchar(keys);
-	  
+	  new_window = GUI_router(new_window);
 	  
 	  
-	  //GUI_DotheAction(pressed_char,curser,Font_7x10,&blink_counter,&blink_speed,&curser_state);
+	  
 	  
 	  HAL_Delay(100);
-	  blink_counter +=1;
 
 	  
 
