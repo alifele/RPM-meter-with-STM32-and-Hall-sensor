@@ -1,5 +1,6 @@
 #include "GUI.h"
 
+char* page = "numm";
 
 
 
@@ -143,7 +144,10 @@ void GUI_DotheAction(char *pressed_char, uint8_t curser[2], FontDef font, uint8_
 }
 
 void GUI_DotheAction_Menu(char *pressed_char, uint8_t curser[2], FontDef font, uint8_t * blink_counter, uint8_t * blink_speed, int8_t *curser_state){
-		
+	if (strcmp(page,"menu")){
+		  GUI_showMenu(curser);
+		  page = "menu";
+	}  
 }
 
 
@@ -151,25 +155,28 @@ void GUI_DotheAction_Menu(char *pressed_char, uint8_t curser[2], FontDef font, u
 void GUI_showMenu(uint8_t curser[2]){
 	curser[0] = 0;
 	curser[1] = 0;
-	ssd1306_Fill(Black);
+	SSD1306_COLOR background_color = Black;
+	SSD1306_COLOR text_color = White;
+	
+	ssd1306_Fill(background_color);
 	ssd1306_UpdateScreen();
 	curser[1] = 2;
-	GUI_writeHere("________________",Font_7x10,curser,White);
-	GUI_newline(curser, Font_7x10,White);
+	GUI_writeHere("________________",Font_7x10,curser,text_color);
+	GUI_newline(curser, Font_7x10,text_color);
 	curser[1] = 0;
-	GUI_writeHere("press number:",Font_7x10,curser,White);
-	GUI_newline(curser, Font_7x10,White);
+	GUI_writeHere("press number:",Font_7x10,curser,text_color);
+	GUI_newline(curser, Font_7x10,text_color);
 	
 	curser[1] +=4;
 	
-	GUI_writeHere("1. set speed",Font_7x10,curser,White);
-	GUI_newline(curser, Font_7x10,White);
+	GUI_writeHere("1. set speed",Font_7x10,curser,text_color);
+	GUI_newline(curser, Font_7x10,text_color);
 	
-	GUI_writeHere("2. program",Font_7x10,curser,White);
-	GUI_newline(curser, Font_7x10,White);
+	GUI_writeHere("2. program",Font_7x10,curser,text_color);
+	GUI_newline(curser, Font_7x10,text_color);
 	
-	GUI_writeHere("3. about",Font_7x10,curser,White);
-	GUI_newline(curser, Font_7x10,White);
+	GUI_writeHere("3. about",Font_7x10,curser,text_color);
+	GUI_newline(curser, Font_7x10,text_color);
 	
 	
 	ssd1306_UpdateScreen();

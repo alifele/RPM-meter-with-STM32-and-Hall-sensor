@@ -4,6 +4,15 @@
 #include <stdio.h>
 #include <string.h>
 
+typedef struct{
+	uint8_t windowID;
+	char * name;
+	FontDef background_color;
+	FontDef text_color;
+	uint8_t status;  // 1 for onair and 0 for not onair
+}window;
+
+
 void GUI_StartDemo(void);
 
 void WriteScreen(int val);

@@ -1750,7 +1750,7 @@
         <RecentRowIndex>1</RecentRowIndex>
         <RectRecentDocked>
           <Len>16</Len>
-          <Data>000000001C000000E701000038000000</Data>
+          <Data>070000001C000000EE01000038000000</Data>
         </RectRecentDocked>
         <RectRecentFloat>
           <Len>16</Len>
@@ -3615,9 +3615,9 @@
       </Doc>
       <Doc>
         <Name>..\GUI\GUI.c</Name>
-        <ColumnNumber>27</ColumnNumber>
-        <TopLine>10</TopLine>
-        <CurrentLine>175</CurrentLine>
+        <ColumnNumber>4</ColumnNumber>
+        <TopLine>16</TopLine>
+        <CurrentLine>173</CurrentLine>
         <Folding>1</Folding>
         <ContractedFolders>5,55,78,85,105,113,121,144</ContractedFolders>
         <PaneID>0</PaneID>

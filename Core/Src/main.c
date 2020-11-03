@@ -49,7 +49,6 @@ int8_t curser_state = 0;
 uint8_t xStep = 11;
 uint8_t blink_speed =2;
 uint8_t blink_counter =0;
-char* page = "numm";
 
 
 
@@ -184,10 +183,7 @@ int main(void)
 	  keypad_read(keys);
 	  pressed_char = keypad_getchar(keys);
 	  
-	  if (strcmp(page,"menu")){
-	      GUI_showMenu(curser);
-		  page = "menu";
-	  }
+	  
 	  
 	  //GUI_DotheAction(pressed_char,curser,Font_7x10,&blink_counter,&blink_speed,&curser_state);
 	  
