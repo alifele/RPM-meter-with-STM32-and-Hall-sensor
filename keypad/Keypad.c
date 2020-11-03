@@ -128,8 +128,30 @@ void keypad_read(bool keys[20]){
 	
 }
 
-char * keypad_getchar(uint8_t keynumber){
-	return keypad_keys[keynumber];
+
+
+
+char * keypad_getchar(bool keys[20]){
+	
+	for (uint8_t i=0; i<20; i++){
+		if (keys[i]){
+			return keypad_keys[i];
+		}
+	  }
+	  return "Z";
 }
 
+
+
+/*
+char * keypad_getchar(uint8_t keynumber){
+	
+	for (uint8_t i=0; i<20; i++){
+		if (keys[i]){
+			preesed_char = keypad_getchar(i);
+		}
+	  }
+	return keypad_keys[keynumber];
+}
+*/
 

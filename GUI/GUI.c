@@ -81,6 +81,99 @@ void GUI_newScreen(void){
 	ssd1306_SetCursor(0,0);
 	ssd1306_UpdateScreen();
 
+}
+
+void GUI_blink(uint8_t * blink_counter, uint8_t * blink_speed, int8_t *curser_state, uint8_t curser[2], FontDef font){
+	
+	if((*blink_counter % *blink_speed)==0){
+			if (*curser_state){
+				ssd1306_SetCursor(curser[0],curser[1]);
+				ssd1306_WriteString(" ",font,White);
+				*curser_state = ~ *curser_state;
+				ssd1306_UpdateScreen();
+				//blink_counter = 1;
+			}else{
+				ssd1306_SetCursor(curser[0],curser[1]);
+				ssd1306_WriteString(" ",font,Black);
+				*curser_state = ~ *curser_state;
+				ssd1306_UpdateScreen();
+				//blink_counter = 1;
+			}
+		}
+	
+}
+
+void GUI_newline(uint8_t curser[2],FontDef font, SSD1306_COLOR color){
+	ssd1306_SetCursor(curser[0],curser[1]);
+	ssd1306_WriteString(" ",font,color);
+	curser[1] += font.FontHeight;
+	curser[0] = 0;
 
 }
 
+void GUI_writeHere(char* preesed_char, FontDef font, uint8_t curser[2],SSD1306_COLOR color){
+	ssd1306_SetCursor(curser[0],curser[1]);
+	ssd1306_WriteString(preesed_char,font,color);
+	//int n = sizeof(preesed_char)/sizeof(preesed_char[0]);
+	//curser[0] += font.FontWidth*(n-1);
+	ssd1306_GetCurser(curser);
+}
+
+void GUI_DotheAction(char *pressed_char, uint8_t curser[2], FontDef font, uint8_t * blink_counter, uint8_t * blink_speed, int8_t *curser_state){
+	
+	if (strcmp(pressed_char, "Z")){
+
+
+		switch (pressed_char[0]){
+			case 'd':
+				GUI_newline(curser, font, White);
+				break;
+			default:
+					GUI_writeHere(pressed_char,font,curser, Black);  
+		}
+
+		ssd1306_UpdateScreen();
+
+	}else{
+		GUI_blink(blink_counter, blink_speed,curser_state,curser, font);
+	}	
+
+	pressed_char = "Z";
+	blink_counter +=1;
+}
+
+void GUI_DotheAction_Menu(char *pressed_char, uint8_t curser[2], FontDef font, uint8_t * blink_counter, uint8_t * blink_speed, int8_t *curser_state){
+		
+}
+
+
+
+void GUI_showMenu(uint8_t curser[2]){
+	curser[0] = 0;
+	curser[1] = 0;
+	ssd1306_Fill(Black);
+	ssd1306_UpdateScreen();
+	curser[1] = 2;
+	GUI_writeHere("________________",Font_7x10,curser,White);
+	GUI_newline(curser, Font_7x10,White);
+	curser[1] = 0;
+	GUI_writeHere("press number:",Font_7x10,curser,White);
+	GUI_newline(curser, Font_7x10,White);
+	
+	curser[1] +=4;
+	
+	GUI_writeHere("1. set speed",Font_7x10,curser,White);
+	GUI_newline(curser, Font_7x10,White);
+	
+	GUI_writeHere("2. program",Font_7x10,curser,White);
+	GUI_newline(curser, Font_7x10,White);
+	
+	GUI_writeHere("3. about",Font_7x10,curser,White);
+	GUI_newline(curser, Font_7x10,White);
+	
+	
+	ssd1306_UpdateScreen();
+
+	
+	
+}

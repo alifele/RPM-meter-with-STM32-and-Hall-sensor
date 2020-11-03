@@ -38,8 +38,7 @@ typedef struct{
 
 void keypad_init(keypad_typedef * keypad_struct);
 void keypad_read(bool key[20]);
-char * keypad_getchar(uint8_t keynumber);
-
+char * keypad_getchar(bool keys[20]);
 
 void keypad_setROW(uint8_t row_number);
 

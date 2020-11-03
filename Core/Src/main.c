@@ -43,12 +43,13 @@ volatile uint32_t Difference = 0;
 volatile int32_t Frequency = 0;
 volatile uint8_t Is_First_Captured = 0;  // 0- not captured, 1- captured
 bool keys[20];
-char * preesed_char;
+char * pressed_char;
 uint8_t curser[2] = {0,0};
 int8_t curser_state = 0;
 uint8_t xStep = 11;
 uint8_t blink_speed =2;
 uint8_t blink_counter =0;
+char* page = "numm";
 
 
 
@@ -159,6 +160,7 @@ int main(void)
   
   
   GUI_newScreen();
+  //GUI_writeHere("Helloooo",Font_7x10, curser);
   while (1)
   {
 	  //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
@@ -178,53 +180,18 @@ int main(void)
 	  HAL_Delay(100);
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 	  //WriteScreen(120000/Freq_val);
-	  preesed_char = "Z";
-	  keypad_read(keys);
 	  
-	  for (uint8_t i=0; i<20; i++){
-		if (keys[i]){
-			preesed_char = keypad_getchar(i);
-		}
+	  keypad_read(keys);
+	  pressed_char = keypad_getchar(keys);
+	  
+	  if (strcmp(page,"menu")){
+	      GUI_showMenu(curser);
+		  page = "menu";
 	  }
-	
-	  if (strcmp(preesed_char, "Z")){
-		 
-		  if (!strcmp(preesed_char, "d")){
-			  	ssd1306_SetCursor(curser[0],curser[1]);
-			    ssd1306_WriteString(" ",Font_7x10,Black);
-			    curser[1] += 11;
-			    curser[0] = 0;
-			   
-		  }else{
-			    ssd1306_SetCursor(curser[0],curser[1]);
-				ssd1306_WriteString(preesed_char,Font_7x10,Black);
-			    curser[0] += 7;
-		  }
-		  ssd1306_UpdateScreen();
-
-	  }else{
-			if((blink_counter % blink_speed)==0){
-			    if (curser_state){
-				    ssd1306_SetCursor(curser[0],curser[1]);
-			  	    ssd1306_WriteString(" ",Font_7x10,White);
-				    curser_state = ~ curser_state;
-				    ssd1306_UpdateScreen();
-					//blink_counter = 1;
-			    }else{
-				    ssd1306_SetCursor(curser[0],curser[1]);
-				    ssd1306_WriteString(" ",Font_7x10,Black);
-				    curser_state = ~ curser_state;
-				    ssd1306_UpdateScreen();
-					//blink_counter = 1;
-			    }
-			}
-	  }	
-		  
-
-		  
+	  
+	  //GUI_DotheAction(pressed_char,curser,Font_7x10,&blink_counter,&blink_speed,&curser_state);
 	  
 	  HAL_Delay(100);
-	  preesed_char = "Z";
 	  blink_counter +=1;
 
 	  
