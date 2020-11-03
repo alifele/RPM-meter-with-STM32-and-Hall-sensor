@@ -204,6 +204,7 @@ window GUI_router(window win){
 	GUI_ShowWin(&win);
 
 	do{
+		pressed_char = "Z";
 		while(pressed_char[0] == 'Z'){
 			keypad_read(keys);
 			pressed_char = keypad_getchar(keys);

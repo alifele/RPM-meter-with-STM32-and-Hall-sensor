@@ -3,9 +3,9 @@
 <title>Static Call Graph - [LED test\LED test.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image LED test\LED test.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Nov 04 02:33:11 2020
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060750: Last Updated: Wed Nov 04 02:43:16 2020
 <BR><P>
-<H3>Maximum Stack Usage =        344 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        336 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; GUI_router &rArr; GUI_DotheAction &rArr; GUI_menu_action &rArr; GUI_blink &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteCommand &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 <P>
@@ -439,8 +439,8 @@ Global Symbols
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GUI_menu_action
 </UL>
 
-<P><STRONG><a name="[5d]"></a>GUI_router</STRONG> (Thumb, 68 bytes, Stack size 64 bytes, gui.o(i.GUI_router))
-<BR><BR>[Stack]<UL><LI>Max Depth = 288<LI>Call Chain = GUI_router &rArr; GUI_DotheAction &rArr; GUI_menu_action &rArr; GUI_blink &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteCommand &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+<P><STRONG><a name="[5d]"></a>GUI_router</STRONG> (Thumb, 66 bytes, Stack size 56 bytes, gui.o(i.GUI_router))
+<BR><BR>[Stack]<UL><LI>Max Depth = 280<LI>Call Chain = GUI_router &rArr; GUI_DotheAction &rArr; GUI_menu_action &rArr; GUI_blink &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteCommand &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[5e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_read
 <LI><a href="#[5f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_getchar
@@ -930,7 +930,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[46]"></a>main</STRONG> (Thumb, 292 bytes, Stack size 56 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 344<LI>Call Chain = main &rArr; GUI_router &rArr; GUI_DotheAction &rArr; GUI_menu_action &rArr; GUI_blink &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteCommand &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 336<LI>Call Chain = main &rArr; GUI_router &rArr; GUI_DotheAction &rArr; GUI_menu_action &rArr; GUI_blink &rArr; ssd1306_UpdateScreen &rArr; ssd1306_WriteCommand &rArr; HAL_I2C_Mem_Write &rArr; I2C_RequestMemoryWrite &rArr; I2C_WaitOnMasterAddressFlagUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;ssd1306_Init
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;keypad_init
