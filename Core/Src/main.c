@@ -42,7 +42,7 @@ volatile uint32_t IC_Value2 = 0;
 volatile uint32_t Difference = 0;
 volatile int32_t Frequency = 0;
 volatile uint8_t Is_First_Captured = 0;  // 0- not captured, 1- captured
-bool keys[20];
+//bool keys[20];
 char * pressed_char;
 //uint8_t curser[2] = {0,0};
 //int8_t curser_state = 0;
@@ -109,7 +109,7 @@ int main(void)
 	
 	GUI_menu__init__(&myapp.menu);
 	GUI_about__init__(&myapp.about);
-	
+	GUI_mainwindow__init__(&myapp.mainwin);
 	/*
 	GUI_mainwin__init__(myapp.mainwin);
 	GUI_about__init__(myapp.about);
