@@ -27,48 +27,14 @@ Project File Date:  11/04/2020
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'LED test'
-compiling GUI.c...
-..\GUI\GUI.c(193): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(198): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(202): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(206): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(210): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(214): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(218): warning:  #111-D: statement is unreachable
-  			break;
-..\GUI\GUI.c(232): warning:  #940-D: missing return statement at end of non-void function "GUI_DotheAction" 
-  }
-..\GUI\GUI.c(294): warning:  #111-D: statement is unreachable
-  				break;
-..\GUI\GUI.c(298): warning:  #111-D: statement is unreachable
-  				break;
-..\GUI\GUI.c(302): warning:  #111-D: statement is unreachable
-  				break;
-..\GUI\GUI.c(315): warning:  #940-D: missing return statement at end of non-void function "GUI_menu_action" 
-  }
-..\GUI\GUI.c(379): warning:  #940-D: missing return statement at end of non-void function "GUI_about_action" 
-  }
-..\GUI\GUI.c(455): warning:  #940-D: missing return statement at end of non-void function "GUI_mainwindow_action" 
-  }
-..\GUI\GUI.c(525): warning:  #940-D: missing return statement at end of non-void function "GUI_show_speed_action" 
-  }
-..\GUI\GUI.c(636): warning:  #940-D: missing return statement at end of non-void function "GUI_set_speed_action" 
-  }
-..\GUI\GUI.c(709): warning:  #940-D: missing return statement at end of non-void function "GUI_settingSpeed_action" 
-  }
-..\GUI\GUI.c(758): warning:  #940-D: missing return statement at end of non-void function "GUI_invalid_action" 
-  }
-..\GUI\GUI.c: 18 warnings, 0 errors
+compiling main.c...
+../Core/Src/main.c(184): warning:  #550-D: variable "new_window"  was set but never used
+    window new_window = myapp.menu;
+../Core/Src/main.c: 1 warning, 0 errors
 linking...
-Program Size: Code=16228 RO-data=10844 RW-data=188 ZI-data=2500  
+Program Size: Code=11728 RO-data=10620 RW-data=88 ZI-data=2504  
 FromELF: creating hex file...
-"LED test\LED test.axf" - 0 Error(s), 18 Warning(s).
+"LED test\LED test.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 

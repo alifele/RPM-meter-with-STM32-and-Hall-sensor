@@ -174,7 +174,7 @@ int main(void)
   */
   WriteScreen(324);
   HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_1);
-  //HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+  HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   //HAL_TIM_Base_Start_IT(&htim6); //I am not using timer6 interrupt for screen update
   
   uint16_t dutyCycle = HAL_TIM_ReadCapturedValue(&htim3, TIM_CHANNEL_1);
@@ -185,25 +185,27 @@ int main(void)
   new_window.status = 1;
   while (1)
   {
+	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dutyCycle);
 	  //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
 	  /*
 	  while (dutyCycle < __HAL_TIM_GET_AUTORELOAD(&htim3)){
 		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, ++dutyCycle);
-		  HAL_Delay(1); 
+		  HAL_Delay(20); 
 	  }
 	  
 	  while (dutyCycle > 0 ){
 		  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, --dutyCycle);
-		  HAL_Delay(1); 
+		  HAL_Delay(20); 
 	  }
 	  */
+	  
 	  
 	  
 	  HAL_Delay(100);
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 	 
 	  
-	  new_window = GUI_router(&new_window, &myapp);
+	  //new_window = GUI_router(&new_window, &myapp);
 	  
 	  
 	  
