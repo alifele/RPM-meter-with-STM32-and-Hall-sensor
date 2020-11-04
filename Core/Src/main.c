@@ -113,6 +113,7 @@ int main(void)
 	GUI_show_speed__init__(&myapp.speed_show);
 	GUI_set_speed__init__(&myapp.speed_set);
 	GUI_settingSpeed__init__(&myapp.setting_speed);
+	GUI_invalid__init__(&myapp.invalid);
 
 
 	/*

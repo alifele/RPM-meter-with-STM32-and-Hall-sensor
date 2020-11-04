@@ -1,15 +1,19 @@
 #include "GUI.h"
 #include "keypad.h"
+#include <stdlib.h>
 
 application_windows WINDOWS;
 
 
 char* page = "numm";
-uint8_t blink_speed =2;
+uint8_t blink_speed =3;
 uint8_t blink_counter =0;
 int8_t curser_state = 0;
 uint8_t curser[2] = {0,0};
+uint8_t set_speed_counter=0;
 extern int32_t Frequency;
+uint16_t input_number = 0;
+char input_string[3];
 
 
 void GUI_StartDemo(void){
@@ -114,6 +118,10 @@ window GUI_router(window *win, application_windows *app){
 				GUI_show_speed_show(win);
 				HAL_Delay(200);
 			}
+			if (win->windowID == 2){
+				GUI_set_speed_blinking_show(win);
+				HAL_Delay(100);
+			}
 			keypad_read(keys);
 			my_char = keypad_getchar(keys);
 			//alifele = 43423;
@@ -159,6 +167,9 @@ void GUI_ShowWin(window * win){
 			GUI_settingSpeed_show(win);
 			break;
 		
+		case 7: //about
+			GUI_invalid_show(win);
+			break;
 		
 		/*
 		case 4: //speed_show
@@ -200,6 +211,10 @@ window GUI_DotheAction(window * win, char* pressed_char,application_windows *app
 		
 		case 6: //set speed
 			return GUI_settingSpeed_action(win, pressed_char,app);
+			break;
+		
+		case 7: //set speed
+			return GUI_invalid_action(win, pressed_char,app);
 			break;
 		
 		/*		
@@ -523,6 +538,8 @@ void GUI_set_speed__init__(window *win){
 }
 
 void GUI_set_speed_show(window *win){
+	set_speed_counter = 0;
+	input_number = 0;
 	curser[0] = 0;
 	curser[1] = 0;
 	char content[10];
@@ -552,38 +569,75 @@ void GUI_set_speed_show(window *win){
 	ssd1306_WriteString("Speed:",Font_11x18,Black);
 
 
-	ssd1306_WriteString(content,Font_11x18,Black);
-	ssd1306_SetCursor(104,32-9+5+11);
+	//ssd1306_WriteString(content,Font_11x18,Black);
+	ssd1306_SetCursor(104,32-9+5+13);
 	ssd1306_WriteString("RPM",Font_7x10,White);
 	
 	ssd1306_SetCursor(1,32-9+5+10+15);
 	ssd1306_WriteString("set:Ent, menu:Esc",Font_7x10,White);
-
+	
+	curser[0] = 68;
+	curser[1] = 23;
 	ssd1306_UpdateScreen();
 	
 }
 
 
+
+void GUI_set_speed_blinking_show(window *win){
+	//ssd1306_SetCursor(curser[0],curser[1]);
+	//ssd1306_WriteString("RPM",Font_7x10,White);
+	//ssd1306_UpdateScreen();
+	GUI_blink(&blink_counter, &blink_speed, &curser_state, curser, Font_11x18);
+	blink_counter += 1 ;
+}
+
 window GUI_set_speed_action(window *win, char * pressed_char,application_windows *app){
-	curser[0] = 0;
-	curser[1] = 0;
-	
+
 	switch (pressed_char[0]){
 		case 'e':
 			return GUI_GoTo(win, app->menu);
 		
 		case 'E':
-			return GUI_GoTo(win, app->setting_speed);
+			if (set_speed_counter != 0){
+				input_number = conver2int(input_string);
+				if (input_number >12 & input_number < 400){
+					return GUI_GoTo(win, app->setting_speed);
+				}else{
+					return GUI_GoTo(win, app->invalid);
+				}
+			}
 		
 		default:
-			GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
+			if (set_speed_counter <3){
+				if (pressed_char[0] >=48 & pressed_char[0] <= 58){
+					GUI_writeHere(pressed_char,Font_11x18,curser, Black); 
+					//curser[0] += 11;
+					input_string[set_speed_counter] = pressed_char[0];
+					set_speed_counter +=1;
+				}	
+			}
+			if (set_speed_counter != 0){
+				if (pressed_char[0] =='l'){ //left
+					GUI_writeHere(" ",Font_11x18,curser, Black); 
+					curser[0] -= 22;
+					GUI_writeHere(" ",Font_11x18,curser, Black); 
+					curser[0] -= 11;
+					input_string[set_speed_counter] = ' ';
+					set_speed_counter -=1;
+				//curser[0] += 11;
+				}
+			}
+			
 	}
 	ssd1306_UpdateScreen();
 	
 	
 }
 
-
+uint16_t conver2int(char *str){
+	return atoi(str);
+}
 
 
 
@@ -600,12 +654,14 @@ void GUI_settingSpeed__init__(window *win){
 }
 
 void GUI_settingSpeed_show(window *win){
-	curser[0] = 9;
-	curser[1] = 23;
+	curser[0] = 0;
+	curser[1] = 0;
 	
 	ssd1306_Fill(Black);
+	ssd1306_UpdateScreen();
+	ssd1306_SetCursor(9,23);
 	ssd1306_WriteString("Setting",Font_11x18,White);
-	HAL_Delay(150);
+	HAL_Delay(100);
 	ssd1306_UpdateScreen();
 
 
@@ -616,12 +672,12 @@ void GUI_settingSpeed_show(window *win){
 	
 	ssd1306_SetCursor(9,23);
 	ssd1306_WriteString("Setting..",Font_11x18,White);
-	HAL_Delay(150);
+	HAL_Delay(200);
 	ssd1306_UpdateScreen();
 	
 	ssd1306_SetCursor(9,23);
 	ssd1306_WriteString("Setting...",Font_11x18,White);
-	HAL_Delay(150);
+	HAL_Delay(250);
 	ssd1306_UpdateScreen();
 	
 	ssd1306_Fill(Black);
@@ -652,6 +708,54 @@ window GUI_settingSpeed_action(window *win, char * pressed_char,application_wind
 	
 }
 
+void GUI_invalid__init__(window *win){
+	
+	win->windowID = 7;
+	win->name = "w";
+	win->background_color = White;
+	win->text_color = Black;
+	win->status = 0;  //Not on-air
+
+}
+
+void GUI_invalid_show(window *win){
+	curser[0] = 0;
+	curser[1] = 0;
+	
+	ssd1306_Fill(Black);
+
+	
+
+	
+	ssd1306_Fill(Black);
+	ssd1306_SetCursor(17,8);
+	ssd1306_WriteString("Invalid!",Font_11x18,White);
+	ssd1306_SetCursor(2,35);
+	ssd1306_WriteString("12<speed<400",Font_7x10,White);
+	
+	ssd1306_SetCursor(2,46);
+	ssd1306_WriteString("press any key...",Font_7x10,White);
+	ssd1306_UpdateScreen();
+	
+	
+}
+
+
+window GUI_invalid_action(window *win, char * pressed_char,application_windows *app){
+	curser[0] = 0;
+	curser[1] = 0;
+	pressed_char = "E";
+	switch (pressed_char[0]){
+		case 'E':
+			return GUI_GoTo(win, app->speed_set);
+		
+		default:
+			GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
+	}
+	ssd1306_UpdateScreen();
+	
+	
+}
 
 
 
