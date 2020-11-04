@@ -19,6 +19,7 @@ typedef struct{
 	window program;
 	window speed_show;
 	window speed_set;
+	window setting_speed;
 }application_windows;
 
 
@@ -55,6 +56,23 @@ window GUI_about_action(window *win, char * pressed_key,application_windows *app
 void GUI_mainwindow__init__(window *win);
 void GUI_mainwindow_show(window *win);
 window GUI_mainwindow_action(window *win, char * pressed_key,application_windows *app);
+
+void GUI_show_speed__init__(window *win);
+void GUI_show_speed_show(window *win);
+window GUI_show_speed_action(window *win, char * pressed_key,application_windows *app);
+
+
+
+
+void GUI_set_speed__init__(window *win);
+void GUI_set_speed_show(window *win);
+window GUI_set_speed_action(window *win, char * pressed_key,application_windows *app);
+
+
+
+void GUI_settingSpeed__init__(window *win);
+void GUI_settingSpeed_show(window *win);
+window GUI_settingSpeed_action(window *win, char * pressed_key,application_windows *app);
 
 /*
 void GUI_mainwin__init__(window *win);

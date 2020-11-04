@@ -110,6 +110,11 @@ int main(void)
 	GUI_menu__init__(&myapp.menu);
 	GUI_about__init__(&myapp.about);
 	GUI_mainwindow__init__(&myapp.mainwin);
+	GUI_show_speed__init__(&myapp.speed_show);
+	GUI_set_speed__init__(&myapp.speed_set);
+	GUI_settingSpeed__init__(&myapp.setting_speed);
+
+
 	/*
 	GUI_mainwin__init__(myapp.mainwin);
 	GUI_about__init__(myapp.about);

@@ -9,7 +9,7 @@ uint8_t blink_speed =2;
 uint8_t blink_counter =0;
 int8_t curser_state = 0;
 uint8_t curser[2] = {0,0};
-
+extern int32_t Frequency;
 
 
 void GUI_StartDemo(void){
@@ -22,7 +22,7 @@ void GUI_StartDemo(void){
 
 void WriteScreen(int val){
 	char content[10];
-	 ssd1306_Fill(White);
+	ssd1306_Fill(White);
 	sprintf(content,"%d",val);
 	ssd1306_SetCursor(2,2);
 	ssd1306_WriteString("Sharif University",Font_7x10,Black);
@@ -99,7 +99,6 @@ window GUI_router(window *win, application_windows *app){
 	//uint8_t blink_counter =0;
 	//int8_t curser_state = 0;
 	
-	WINDOWS = *app;
 	
 	bool keys[20];
 	char *my_char = "Z";
@@ -111,10 +110,15 @@ window GUI_router(window *win, application_windows *app){
 	do{
 		my_char = "Z";
 		while(my_char[0] == 'Z'){
+			if (win->windowID == 1){
+				GUI_show_speed_show(win);
+				HAL_Delay(200);
+			}
 			keypad_read(keys);
 			my_char = keypad_getchar(keys);
 			//alifele = 43423;
-			//GUI_blink(&blink_counter,&blink_speed,&curser_state,curser,font)
+			//GUI_blink(&blink_counter,&blink_speed,&curser_state,curser,font);
+			
 		}
 		
 		new_window = GUI_DotheAction(win, my_char, app);
@@ -130,18 +134,32 @@ void GUI_ShowWin(window * win){
 	
 	switch(win->windowID){
 		
-		case 1: //main window
+		case 0: //main window
 			GUI_mainwindow_show(win);
 			break;
 		
 		
-		case 2: //menu
+		case 5: //menu
 			GUI_menu_show(win);
 			break;
 		
-		case 3: //about
+		case 4: //about
 			GUI_about_show(win);
 			break;
+		
+		case 1: //about
+			GUI_show_speed_show(win);
+			break;
+		
+		case 2: //about
+			GUI_set_speed_show(win);
+			break;
+		
+		case 6: //about
+			GUI_settingSpeed_show(win);
+			break;
+		
+		
 		/*
 		case 4: //speed_show
 			GUI_speed_show_show(win);
@@ -159,18 +177,31 @@ window GUI_DotheAction(window * win, char* pressed_char,application_windows *app
 	
 	switch(win->windowID){
 		
-		case 1: //main window
+		case 0: //main window
 			return GUI_mainwindow_action(win, pressed_char,app);
 			break;
 		
 		
-		case 2: //menu
+		case 5: //menu
 			return GUI_menu_action(win, pressed_char,app);
 			break;
 		
-		case 3: //about
+		case 4: //about
 			return GUI_about_action(win, pressed_char,app);
 			break;
+		
+		case 1: //show speed
+			return GUI_show_speed_action(win, pressed_char,app);
+			break;
+		
+		case 2: //set speed
+			return GUI_set_speed_action(win, pressed_char,app);
+			break;
+		
+		case 6: //set speed
+			return GUI_settingSpeed_action(win, pressed_char,app);
+			break;
+		
 		/*		
 		case 4: //speed_show
 			return GUI_speed_show_action(win, pressed_char);
@@ -193,7 +224,7 @@ window GUI_DotheAction(window * win, char* pressed_char,application_windows *app
 
 void GUI_menu__init__(window *win){
 	
-	win->windowID = 2;
+	win->windowID = 5;
 	win->name = "m";
 	win->background_color = Black;
 	win->text_color = White;
@@ -218,17 +249,20 @@ void GUI_menu_show(window *win){
 	
 	curser[1] +=4;
 	
-	GUI_writeHere("1. set speed",Font_7x10,curser,text_color);
+	GUI_writeHere("1. show speed",Font_7x10,curser,text_color);
 	GUI_newline(curser, Font_7x10,text_color);
 	
-	GUI_writeHere("2. program",Font_7x10,curser,text_color);
+	GUI_writeHere("2. set speed",Font_7x10,curser,text_color);
 	GUI_newline(curser, Font_7x10,text_color);
 	
-	GUI_writeHere("3. about",Font_7x10,curser,text_color);
+	GUI_writeHere("3. program",Font_7x10,curser,text_color);
 	GUI_newline(curser, Font_7x10,text_color);
 	
-	GUI_writeHere("4. show demo",Font_7x10,curser,text_color);
+	GUI_writeHere("4. about",Font_7x10,curser,text_color);
 	GUI_newline(curser, Font_7x10,text_color);
+	
+	
+	
 	
 	
 	ssd1306_UpdateScreen();
@@ -240,13 +274,19 @@ window GUI_menu_action(window *win, char * pressed_char,application_windows *app
 	curser[1] = 0;
 	if (strcmp(pressed_char, "Z")){
 		switch (pressed_char[0]){
-			case '3':
-				return GUI_GoTo(win, app->about);
-			
 			case '4':
-				return GUI_GoTo(win, app->mainwin);
-				
+				return GUI_GoTo(win, app->about);
 				break;
+			
+			case '1':
+				return GUI_GoTo(win, app->speed_show);
+				break;
+			
+			case '2':
+				return GUI_GoTo(win, app->speed_set);
+				break;
+			
+			
 			default:
 				GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
 		}
@@ -266,7 +306,7 @@ window GUI_menu_action(window *win, char * pressed_char,application_windows *app
 
 void GUI_about__init__(window *win){
 	
-	win->windowID = 3;
+	win->windowID = 4;
 	win->name = "a";
 	win->background_color = Black;
 	win->text_color = White;
@@ -332,7 +372,7 @@ window GUI_about_action(window *win, char * pressed_char,application_windows *ap
 
 void GUI_mainwindow__init__(window *win){
 	
-	win->windowID = 1;
+	win->windowID = 0;
 	win->name = "M";
 	win->background_color = White;
 	win->text_color = Black;
@@ -398,6 +438,220 @@ window GUI_mainwindow_action(window *win, char * pressed_char,application_window
 	
 	
 }
+
+
+
+
+void GUI_show_speed__init__(window *win){
+	
+	win->windowID = 1;
+	win->name = "s";
+	win->background_color = White;
+	win->text_color = Black;
+	win->status = 0;  //Not on-air
+
+}
+
+void GUI_show_speed_show(window *win){
+	curser[0] = 0;
+	curser[1] = 0;
+	char content[10];
+	ssd1306_Fill(White);
+	sprintf(content,"%d",120000/Frequency);
+	
+	curser[1] = 3;
+	curser[0] = 1;
+	GUI_writeHere("___________________",Font_7x10,curser,Black);
+	GUI_newline(curser, Font_7x10,Black);
+	curser[1] = 1;
+	curser[0] = 4;
+	GUI_writeHere("Sharif University",Font_7x10,curser,Black);
+	GUI_newline(curser, Font_7x10,Black);
+	
+	/*
+	ssd1306_SetCursor(0,7);
+	GUI_writeHere("__________________",Font_7x10,curser,Black);
+	GUI_newline(curser, Font_7x10,Black);
+	
+	ssd1306_SetCursor(0,0);
+	ssd1306_WriteString("Sharif University",Font_7x10,Black);
+	*/
+	//HAL_Delay(100);
+
+	ssd1306_SetCursor(2,32-9);
+	ssd1306_WriteString("Speed:",Font_11x18,Black);
+
+
+	ssd1306_WriteString(content,Font_11x18,Black);
+	ssd1306_SetCursor(104,32-9+5+11);
+	ssd1306_WriteString("RPM",Font_7x10,White);
+	
+	ssd1306_SetCursor(1,32-9+5+10+15);
+	ssd1306_WriteString("menu: hold Esc...",Font_7x10,White);
+
+	ssd1306_UpdateScreen();
+	
+}
+
+
+window GUI_show_speed_action(window *win, char * pressed_char,application_windows *app){
+	curser[0] = 0;
+	curser[1] = 0;
+	
+	switch (pressed_char[0]){
+		case 'e':
+			return GUI_GoTo(win, app->menu);
+		default:
+			GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
+	}
+	ssd1306_UpdateScreen();
+	
+	
+}
+
+
+
+
+void GUI_set_speed__init__(window *win){
+	
+	win->windowID = 2;
+	win->name = "S";
+	win->background_color = White;
+	win->text_color = Black;
+	win->status = 0;  //Not on-air
+
+}
+
+void GUI_set_speed_show(window *win){
+	curser[0] = 0;
+	curser[1] = 0;
+	char content[10];
+	ssd1306_Fill(White);
+	sprintf(content,"%d",120000/Frequency);
+	
+	curser[1] = 3;
+	curser[0] = 1;
+	GUI_writeHere("___________________",Font_7x10,curser,Black);
+	GUI_newline(curser, Font_7x10,Black);
+	curser[1] = 1;
+	curser[0] = 4;
+	GUI_writeHere("    Set Speed    ",Font_7x10,curser,White);
+	GUI_newline(curser, Font_7x10,Black);
+	
+	/*
+	ssd1306_SetCursor(0,7);
+	GUI_writeHere("__________________",Font_7x10,curser,Black);
+	GUI_newline(curser, Font_7x10,Black);
+	
+	ssd1306_SetCursor(0,0);
+	ssd1306_WriteString("Sharif University",Font_7x10,Black);
+	*/
+	//HAL_Delay(100);
+
+	ssd1306_SetCursor(2,32-9);
+	ssd1306_WriteString("Speed:",Font_11x18,Black);
+
+
+	ssd1306_WriteString(content,Font_11x18,Black);
+	ssd1306_SetCursor(104,32-9+5+11);
+	ssd1306_WriteString("RPM",Font_7x10,White);
+	
+	ssd1306_SetCursor(1,32-9+5+10+15);
+	ssd1306_WriteString("set:Ent, menu:Esc",Font_7x10,White);
+
+	ssd1306_UpdateScreen();
+	
+}
+
+
+window GUI_set_speed_action(window *win, char * pressed_char,application_windows *app){
+	curser[0] = 0;
+	curser[1] = 0;
+	
+	switch (pressed_char[0]){
+		case 'e':
+			return GUI_GoTo(win, app->menu);
+		
+		case 'E':
+			return GUI_GoTo(win, app->setting_speed);
+		
+		default:
+			GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
+	}
+	ssd1306_UpdateScreen();
+	
+	
+}
+
+
+
+
+
+
+
+void GUI_settingSpeed__init__(window *win){
+	
+	win->windowID = 6;
+	win->name = "w";
+	win->background_color = White;
+	win->text_color = Black;
+	win->status = 0;  //Not on-air
+
+}
+
+void GUI_settingSpeed_show(window *win){
+	curser[0] = 9;
+	curser[1] = 23;
+	
+	ssd1306_Fill(Black);
+	ssd1306_WriteString("Setting",Font_11x18,White);
+	HAL_Delay(150);
+	ssd1306_UpdateScreen();
+
+
+	ssd1306_SetCursor(9,23);
+	ssd1306_WriteString("Setting.",Font_11x18,White);
+	HAL_Delay(150);
+	ssd1306_UpdateScreen();
+	
+	ssd1306_SetCursor(9,23);
+	ssd1306_WriteString("Setting..",Font_11x18,White);
+	HAL_Delay(150);
+	ssd1306_UpdateScreen();
+	
+	ssd1306_SetCursor(9,23);
+	ssd1306_WriteString("Setting...",Font_11x18,White);
+	HAL_Delay(150);
+	ssd1306_UpdateScreen();
+	
+	ssd1306_Fill(Black);
+	ssd1306_SetCursor(9,18);
+	ssd1306_WriteString("Done!      ",Font_11x18,White);
+	ssd1306_SetCursor(0,45);
+	ssd1306_WriteString("press Ent...",Font_7x10,White);
+
+	ssd1306_UpdateScreen();
+	
+	
+}
+
+
+window GUI_settingSpeed_action(window *win, char * pressed_char,application_windows *app){
+	curser[0] = 0;
+	curser[1] = 0;
+	
+	switch (pressed_char[0]){
+		case 'E':
+			return GUI_GoTo(win, app->speed_show);
+		
+		default:
+			GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
+	}
+	ssd1306_UpdateScreen();
+	
+	
+}
+
 
 
 
