@@ -32,15 +32,21 @@ void GUI_writeHere(char* preesed_char, FontDef font, uint8_t curser[2],SSD1306_C
 void GUI_showMenu(uint8_t curser[2]);
 
 
-window GUI_DotheAction(window * win, char* pressed_char);
-window GUI_router(window win);
+window GUI_DotheAction(window * win, char* pressed_char,application_windows *app);
+window GUI_router(window *win, application_windows *app);
 void GUI_ShowWin(window * win);
 
 
 
 void GUI_menu__init__(window *win);
 void GUI_menu_show(window *win);
-window GUI_menu_action(window *win, char * pressed_key);
+window GUI_menu_action(window *win, char * pressed_key,application_windows *app);
+
+
+void GUI_about__init__(window *win);
+void GUI_about_show(window *win);
+window GUI_about_action(window *win, char * pressed_key,application_windows *app);
+
 
 /*
 void GUI_mainwin__init__(window *win);

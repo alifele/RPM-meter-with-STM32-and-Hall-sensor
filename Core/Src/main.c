@@ -108,6 +108,7 @@ int main(void)
 
 	
 	GUI_menu__init__(&myapp.menu);
+	GUI_about__init__(&myapp.about);
 	
 	/*
 	GUI_mainwin__init__(myapp.mainwin);
@@ -196,7 +197,7 @@ int main(void)
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 	 
 	  
-	  new_window = GUI_router(new_window);
+	  new_window = GUI_router(&new_window, &myapp);
 	  
 	  
 	  

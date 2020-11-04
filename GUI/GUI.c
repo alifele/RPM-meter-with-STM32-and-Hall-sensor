@@ -1,6 +1,9 @@
 #include "GUI.h"
 #include "keypad.h"
 
+application_windows WINDOWS;
+
+
 char* page = "numm";
 uint8_t blink_speed =2;
 uint8_t blink_counter =0;
@@ -191,17 +194,19 @@ void GUI_showMenu(uint8_t curser[2]){
 }
 
 
-window GUI_router(window win){
+window GUI_router(window *win, application_windows *app){
 	//uint8_t blink_speed =2;
 	//uint8_t blink_counter =0;
 	//int8_t curser_state = 0;
+	
+	WINDOWS = *app;
 	
 
 	char *pressed_char = "Z";
 	bool keys[20];
 	window new_window = {0};
 	
-	GUI_ShowWin(&win);
+	GUI_ShowWin(win);
 
 	do{
 		pressed_char = "Z";
@@ -211,8 +216,8 @@ window GUI_router(window win){
 			//GUI_blink(&blink_counter,&blink_speed,&curser_state,curser,font)
 		}
 		
-		new_window = GUI_DotheAction(&win, pressed_char);
-	}while(win.status);
+		new_window = GUI_DotheAction(win, pressed_char, app);
+	}while(win->status);
 	
 	return new_window;
 }
@@ -232,11 +237,11 @@ void GUI_ShowWin(window * win){
 		case 2: //menu
 			GUI_menu_show(win);
 			break;
-		/*	
+		
 		case 3: //about
 			GUI_about_show(win);
 			break;
-			
+		/*
 		case 4: //speed_show
 			GUI_speed_show_show(win);
 			break;
@@ -249,7 +254,7 @@ void GUI_ShowWin(window * win){
 }
 
 
-window GUI_DotheAction(window * win, char* pressed_char){
+window GUI_DotheAction(window * win, char* pressed_char,application_windows *app){
 	
 	switch(win->windowID){
 		/*
@@ -259,13 +264,13 @@ window GUI_DotheAction(window * win, char* pressed_char){
 		*/
 		
 		case 2: //menu
-			return GUI_menu_action(win, pressed_char);
+			return GUI_menu_action(win, pressed_char,app);
 			break;
-		/*	
+		
 		case 3: //about
-			return GUI_about_action(win, pressed_char);
+			return GUI_about_action(win, pressed_char,app);
 			break;
-			
+		/*		
 		case 4: //speed_show
 			return GUI_speed_show_action(win, pressed_char);
 			break;
@@ -326,14 +331,70 @@ void GUI_menu_show(window *win){
 }
 
 
-window GUI_menu_action(window *win, char * pressed_char){
+window GUI_menu_action(window *win, char * pressed_char,application_windows *app){
+	curser[0] = 0;
+	curser[1] = 0;
+	if (strcmp(pressed_char, "Z")){
+		switch (pressed_char[0]){
+			case '3':
+				//GUI_newline(curser, Font_7x10, White);
+				win->status =0;
+				return app->about;
+				
+				break;
+			default:
+				GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
+		}
+		ssd1306_UpdateScreen();
+	}else{
+		GUI_blink(&blink_counter, &blink_speed,&curser_state,curser, Font_7x10);
+	}	
+
+	pressed_char = "Z";
+	
+}
+
+
+
+
+
+
+
+void GUI_about__init__(window *win){
+	
+	win->windowID = 2;
+	win->name = "m";
+	win->background_color = Black;
+	win->text_color = White;
+	win->status = 0;  //Not on-air
+
+}
+
+void GUI_about_show(window *win){
+	curser[0] = 0;
+	curser[1] = 0;
+	SSD1306_COLOR background_color = Black;
+	SSD1306_COLOR text_color = White;
+	
+	ssd1306_Fill(background_color);
+	ssd1306_UpdateScreen();
+	curser[1] = 2;
+	GUI_writeHere("________________",Font_7x10,curser,text_color);
+	GUI_newline(curser, Font_7x10,text_color);
+	curser[1] = 0;
+	GUI_writeHere("Helolo there:",Font_7x10,curser,text_color);
+	
+	ssd1306_UpdateScreen();
+}
+
+
+window GUI_about_action(window *win, char * pressed_char,application_windows *app){
 	curser[0] = 0;
 	curser[1] = 0;
 	if (strcmp(pressed_char, "Z")){
 		switch (pressed_char[0]){
 			case 'd':
-				GUI_newline(curser, Font_7x10, White);
-				break;
+				win->status = 0;
 			default:
 				GUI_writeHere(pressed_char,Font_7x10,curser, Black);  
 		}
