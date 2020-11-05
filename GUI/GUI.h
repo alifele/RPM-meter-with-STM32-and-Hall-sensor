@@ -63,7 +63,7 @@ void GUI_show_speed_show(window *win);
 window GUI_show_speed_action(window *win, char * pressed_key,application_windows *app);
 
 
-uint16_t conver2int(char * str);
+uint16_t conver2int(char *str);
 
 void GUI_set_speed__init__(window *win);
 void GUI_set_speed_show(window *win);

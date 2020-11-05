@@ -36,3 +36,4 @@ led test\gui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
 led test\gui.o: ../keypad/keypad.h
 led test\gui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
 led test\gui.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+led test\gui.o: ../PID_controller/PID.h

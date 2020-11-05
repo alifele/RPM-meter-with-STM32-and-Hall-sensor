@@ -1,6 +1,7 @@
 #include "GUI.h"
 #include "keypad.h"
 #include <stdlib.h>
+#include "PID.h"
 
 application_windows WINDOWS;
 
@@ -13,15 +14,15 @@ uint8_t curser[2] = {0,0};
 uint8_t set_speed_counter=0;
 extern int32_t Frequency;
 uint16_t input_number = 0;
-char input_string[3];
+uint16_t goal_rpm = 399;
+uint16_t GUI_curr_dutycycle;
+char input_string[5];
+uint8_t rpm_ctr_priod = 50;
+uint8_t rpm_ctr_counter = 0;
+
+void set_dutycycle(uint16_t input_number);
 
 
-void GUI_StartDemo(void){
-	
-	
-	
-	
-}
 
 
 void WriteScreen(int val){
@@ -122,11 +123,16 @@ window GUI_router(window *win, application_windows *app){
 				GUI_set_speed_blinking_show(win);
 				HAL_Delay(100);
 			}
+			
+			if (rpm_ctr_counter % rpm_ctr_priod ==0){
+				PID_get_nextdutycycle(&GUI_curr_dutycycle, 120000/(1+Frequency), goal_rpm);
+				set_dutycycle(GUI_curr_dutycycle);
+				HAL_Delay(40);
+			}
+			
 			keypad_read(keys);
 			my_char = keypad_getchar(keys);
-			//alifele = 43423;
-			//GUI_blink(&blink_counter,&blink_speed,&curser_state,curser,font);
-			
+			//HAL_Delay(20);
 		}
 		
 		new_window = GUI_DotheAction(win, my_char, app);
@@ -496,7 +502,7 @@ void GUI_show_speed_show(window *win){
 	ssd1306_SetCursor(2,32-9);
 	ssd1306_WriteString("Speed:",Font_11x18,Black);
 
-
+	//sprintf(content,"%d",GUI_curr_dutycycle);
 	ssd1306_WriteString(content,Font_11x18,Black);
 	ssd1306_SetCursor(104,32-9+5+11);
 	ssd1306_WriteString("RPM",Font_7x10,White);
@@ -600,8 +606,11 @@ window GUI_set_speed_action(window *win, char * pressed_char,application_windows
 		
 		case 'E':
 			if (set_speed_counter != 0){
+				input_string[set_speed_counter] = ' ';
 				input_number = conver2int(input_string);
 				if (input_number >12 & input_number < 400){
+					goal_rpm = input_number;
+					//PID_get_goal_rpm(input_number);
 					return GUI_GoTo(win, app->setting_speed);
 				}else{
 					return GUI_GoTo(win, app->invalid);
@@ -636,7 +645,10 @@ window GUI_set_speed_action(window *win, char * pressed_char,application_windows
 }
 
 uint16_t conver2int(char *str){
-	return atoi(str);
+	uint16_t my_num;
+	//char name[]="433";
+	my_num = atoi(str);
+	return my_num;
 }
 
 

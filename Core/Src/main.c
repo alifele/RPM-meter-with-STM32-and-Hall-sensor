@@ -25,7 +25,7 @@
 #include "GUI.h"
 #include "Keypad.h"
 #include <string.h>
-
+#include "PID.h"
 
 /* USER CODE END Includes */
 
@@ -40,7 +40,7 @@ volatile int Freq_val = 10;
 volatile uint32_t IC_Value1 = 0;
 volatile uint32_t IC_Value2 = 0;
 volatile uint32_t Difference = 0;
-volatile int32_t Frequency = 0;
+volatile int32_t Frequency = 1;
 volatile uint8_t Is_First_Captured = 0;  // 0- not captured, 1- captured
 //bool keys[20];
 char * pressed_char;
@@ -49,7 +49,7 @@ char * pressed_char;
 uint8_t xStep = 11;
 //uint8_t blink_speed =2;
 //uint8_t blink_counter =0;
-
+uint16_t dutyCycle;
 
 
 application_windows myapp;
@@ -86,7 +86,7 @@ static void MX_TIM6_Init(void);
 static void MX_TIM3_Init(void);
 /* USER CODE BEGIN PFP */
 static void keypad_Init(void);
-
+void set_rpm(uint16_t input_number);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -177,15 +177,17 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
   //HAL_TIM_Base_Start_IT(&htim6); //I am not using timer6 interrupt for screen update
   
-  uint16_t dutyCycle = HAL_TIM_ReadCapturedValue(&htim3, TIM_CHANNEL_1);
+  dutyCycle = HAL_TIM_ReadCapturedValue(&htim3, TIM_CHANNEL_1);
+  dutyCycle = 100;
   
   
   GUI_newScreen();
   window new_window = myapp.menu;
   new_window.status = 1;
+  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dutyCycle);
   while (1)
   {
-	  __HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, dutyCycle);
+	  
 	  //HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_8);
 	  /*
 	  while (dutyCycle < __HAL_TIM_GET_AUTORELOAD(&htim3)){
@@ -205,7 +207,7 @@ int main(void)
 	  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_12);
 	 
 	  
-	  //new_window = GUI_router(&new_window, &myapp);
+	  new_window = GUI_router(&new_window, &myapp);
 	  
 	  
 	  
@@ -549,6 +551,9 @@ static void keypad_Init(void){
 
 }
 
+void set_dutycycle(uint16_t input_number){
+	__HAL_TIM_SET_COMPARE(&htim3, TIM_CHANNEL_1, input_number);
+}
 
 
 

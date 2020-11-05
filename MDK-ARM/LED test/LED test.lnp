@@ -22,6 +22,7 @@
 "led test\ssd1306.o"
 "led test\gui.o"
 "led test\keypad.o"
+"led test\pid.o"
 --library_type=microlib --strict --scatter "LED test\LED test.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
