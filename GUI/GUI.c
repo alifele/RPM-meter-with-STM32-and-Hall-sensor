@@ -481,7 +481,7 @@ void GUI_show_speed_show(window *win){
 	sprintf(content,"%d",120000/Frequency);
 	
 	curser[1] = 3;
-	curser[0] = 1;
+	curser[0] = 1; //curser pos
 	GUI_writeHere("___________________",Font_7x10,curser,Black);
 	GUI_newline(curser, Font_7x10,Black);
 	curser[1] = 1;
